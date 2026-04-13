@@ -5,3 +5,4 @@ ollama
 langchain
 langchain-community
 langchain-ollama
+*.pyc
