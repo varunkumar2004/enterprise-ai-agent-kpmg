@@ -1,0 +1,44 @@
+version: '3.8' 
+
+services:
+  ollama:
+    image: ollama/ollama:latest
+    container_name: enterprise_agent_ollama
+    ports:
+      - "11434:11434"
+    volumes:
+      - ollama_models:/root/.ollama
+
+  backend:
+    build:
+      context: .
+      dockerfile: backend.Dockerfile
+    container_name: enterprise_agent_backend
+    ports:
+      - "8000:8000"
+    environment:
+      # Tells the Python ollama library to connect to the Docker network
+      - OLLAMA_HOST=http://ollama:11434
+    volumes:
+      # Persists your ChromaDB vector vault so you don't lose data on restart
+      - chromadb_vault:/app/bank_code_vault
+    depends_on:
+      - ollama
+
+  frontend:
+    build:
+      context: .
+      dockerfile: frontend.Dockerfile
+    container_name: enterprise_agent_frontend
+    ports:
+      - "8501:8501"
+    environment:
+      # Adjust your ui.py to use this environment variable if you want it to be dynamic, 
+      # or hardcode the backend container URL in ui.py (http://backend:8000/ask)
+      - BACKEND_URL=http://backend:8000/ask
+    depends_on:
+      - backend
+
+volumes:
+  ollama_models:
+  chromadb_vault:
