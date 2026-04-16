@@ -1,8 +1,9 @@
-fastapi 
+fastapi
 uvicorn
+pydantic
 chromadb
-ollama
 langchain
-langchain-community
-langchain-ollama
-*.pyc
+langchain-core
+ollama
+streamlit
+requests
