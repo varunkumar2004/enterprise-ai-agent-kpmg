@@ -1,0 +1,68 @@
+{
+  "name": "enterprise-coding-assistant",
+  "displayName": "Enterprise Coding Assistant",
+  "description": "Air-gapped enterprise coding assistant client",
+  "version": "0.1.0",
+  "publisher": "enterprise",
+  "engines": {
+    "vscode": "^1.85.0"
+  },
+  "categories": [
+    "Other"
+  ],
+  "activationEvents": [
+    "onStartupFinished"
+  ],
+  "main": "./dist/extension.js",
+  "contributes": {
+    "commands": [
+      {
+        "command": "assistant.openChat",
+        "title": "Assistant: Open Chat"
+      },
+      {
+        "command": "assistant.explainSelection",
+        "title": "Assistant: Explain Selection"
+      }
+    ],
+    "configuration": {
+      "title": "Enterprise Assistant",
+      "properties": {
+        "assistant.apiBaseUrl": {
+          "type": "string",
+          "default": "http://127.0.0.1:8000",
+          "description": "Base URL for the Assistant FastAPI service (no trailing slash)."
+        },
+        "assistant.model": {
+          "type": "string",
+          "default": "deepseek-coder",
+          "description": "Default model id understood by the inference backend."
+        },
+        "assistant.authEnabled": {
+          "type": "boolean",
+          "default": false,
+          "description": "Send Authorization bearer token from secret storage."
+        },
+        "assistant.requestTimeoutMs": {
+          "type": "number",
+          "default": 120000
+        }
+      }
+    }
+  },
+  "scripts": {
+    "vscode:prepublish": "npm run package",
+    "compile": "webpack --mode development",
+    "watch": "webpack --mode development --watch",
+    "package": "webpack --mode production --devtool hidden-source-map",
+    "lint": "eslint src --ext ts || true"
+  },
+  "devDependencies": {
+    "@types/node": "^20.17.9",
+    "@types/vscode": "^1.85.0",
+    "ts-loader": "^9.5.1",
+    "typescript": "^5.7.2",
+    "webpack": "^5.96.1",
+    "webpack-cli": "^5.1.4"
+  }
+}

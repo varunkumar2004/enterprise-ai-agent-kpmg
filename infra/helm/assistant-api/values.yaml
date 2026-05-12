@@ -1,0 +1,57 @@
+replicaCount: 2
+
+image:
+  repository: assistant-api
+  tag: "0.1.0"
+  pullPolicy: IfNotPresent
+
+service:
+  type: ClusterIP
+  port: 8000
+
+ingress:
+  enabled: false
+  className: ""
+  annotations: {}
+  hosts:
+    - host: assistant.example.internal
+      paths:
+        - path: /
+          pathType: Prefix
+  tls: []
+
+resources:
+  limits:
+    cpu: "1"
+    memory: 512Mi
+  requests:
+    cpu: 250m
+    memory: 256Mi
+
+podSecurityContext:
+  runAsNonRoot: true
+  runAsUser: 10001
+  fsGroup: 10001
+
+securityContext:
+  allowPrivilegeEscalation: false
+  readOnlyRootFilesystem: true
+  capabilities:
+    drop:
+      - ALL
+
+env:
+  ASSISTANT_ENVIRONMENT: production
+  ASSISTANT_AUTH_ENABLED: "false"
+  ASSISTANT_DOCS_ENABLED: "false"
+  ASSISTANT_API_PREFIX: /api
+  ASSISTANT_API_VERSION: v1
+  ASSISTANT_LLM_BACKEND: ollama
+  ASSISTANT_OLLAMA_BASE_URL: http://ollama.inference.svc.cluster.local:11434
+  ASSISTANT_DEFAULT_MODEL: deepseek-coder
+
+secrets:
+  jwtSecretKey: ""
+
+networkPolicy:
+  enabled: true

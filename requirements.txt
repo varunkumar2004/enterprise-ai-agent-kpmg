@@ -1,9 +1,0 @@
-fastapi
-uvicorn
-pydantic
-chromadb
-langchain
-langchain-core
-ollama
-streamlit
-requests

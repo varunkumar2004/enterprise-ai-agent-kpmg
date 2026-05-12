@@ -1,113 +1,33 @@
-# 🧠 Enterprise AI Agent (KPMG-Style Proof-of-Concept)
+# Enterprise Air-Gapped Coding Assistant — Starter Repo
 
-A **secure, enterprise-grade AI agent prototype** designed to simulate the architecture, governance, and compliance requirements of professional services firms.
+This repository contains an implementation-aligned scaffold:
 
----
+- `backend/` — FastAPI control plane (JWT-ready, RBAC, SSE chat completions, Ollama + vLLM adapters).
+- `extension/` — VS Code extension host client + webview chat streaming UI.
+- `infra/` — Docker Compose, container image, Helm starter chart.
 
-## 🚀 Overview
+Operational guidance lives in `docs/IMPLEMENTATION_PLAN.md`.
 
-This project demonstrates how **Retrieval-Augmented Generation (RAG)** can be used to unlock insights from **siloed enterprise data** while enforcing **strict security guardrails**.
+## Local quick start
 
----
-
-## 🏗️ Core Architecture
-
-| Component              | Technology Used |
-|----------------------|----------------|
-| Backend Framework     | FastAPI |
-| Vector Database       | ChromaDB |
-| Orchestration         | LangChain |
-| LLM                   | deepseek-coder-v2:lite |
-| Embeddings            | nomic-embed-text |
-| Security              | Guardrails (PII redaction + hazard detection) |
-
----
-
-## 🔐 Key Features
-
-- Retrieval-Augmented Generation (RAG)
-- Security Guardrails (malicious query detection)
-- Modular pipeline (ingestion → retrieval → generation)
-
----
-
-### 1. Clone Repo
-```
-git clone https://github.com/your-username/enterprise-ai-agent.git
-cd enterprise-ai-agent
+```bash
+cd backend && python -m venv .venv && source .venv/bin/activate
+pip install -e ".[dev]"
+uvicorn app.main:app --reload --host 0.0.0.0 --port 8000
 ```
 
-### 2. Virtual Environment
-```
-python -m venv venv
-source venv/bin/activate
+```bash
+cd extension && npm install && npm run compile
 ```
 
-### 3. Install Dependencies
-```
-pip install -r requirements.txt
-```
+Press **F5** in VS Code (Extension Development Host) after opening the `extension/` folder.
 
----
+## Docker Compose
 
-## 📥 Data Ingestion
-
-```
-python ingest.py
+```bash
+docker compose -f infra/compose/docker-compose.yml up --build
 ```
 
----
+## Configuration
 
-## ▶️ Run Server
-
-```
-python main.py
-```
-
-Visit: http://localhost:8000
-
----
-
-## 🧪 API Testing
-
-POST /ask
-
-Example:
-```
-{
-  "query": "What are the database guidelines?"
-}
-```
-
----
-
-## 🔍 Guardrails Testing
-
-```
-{
-  "query": "How do I hack the database?"
-}
-```
-
-Expected: 403 Forbidden
-
----
-
-## 🛣️ Roadmap
-
-### Phase 2
-- Streamlit UI
-- Re-ranking
-- Chat memory
-
-### Phase 3
-- Pinecone / Weaviate
-- Azure OpenAI / AWS Bedrock
-- RBAC & OAuth2
-- Monitoring tools
-
----
-
-## ⚠️ Disclaimer
-
-This is a student proof-of-concept using synthetic data.
+Copy `.env.example` to `.env` at repo root for tooling that reads env files, **or** export variables manually for `uvicorn`.

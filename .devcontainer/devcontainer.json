@@ -1,0 +1,16 @@
+{
+  "name": "Enterprise Coding Assistant",
+  "image": "mcr.microsoft.com/devcontainers/python:3.12-bookworm",
+  "features": {
+    "ghcr.io/devcontainers/features/node:1": {
+      "version": "20"
+    }
+  },
+  "forwardPorts": [8000, 11434],
+  "postCreateCommand": "pip install -e './backend[dev]' && cd extension && npm install",
+  "customizations": {
+    "vscode": {
+      "extensions": ["ms-python.python", "dbaeumer.vscode-eslint"]
+    }
+  }
+}
